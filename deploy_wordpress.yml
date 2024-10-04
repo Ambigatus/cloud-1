@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  become: yes  # This allows Ansible to use sudo for tasks
+  tasks:
+    - name: Install Docker Compose dependencies
+      apt:
+        name:
+          - curl
+          - python3-pip
+        update_cache: yes
+        state: present
+
+    - name: Install Docker Python SDK for Ansible
+      pip:
+        name: docker
+        virtualenv: /home/ubuntu/ansible_env
+
+    - name: Start Docker containers using Docker Compose
+      command: docker-compose up -d
+      args:
+        chdir: /home/ubuntu/cloud-1
